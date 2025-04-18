@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mountain Trivia Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #e0f7fa;
+      color: #333;
+    }
+    h1 {
+      color: #00695c;
+    }
+    #game {
+      margin-top: 20px;
+    }
+    input {
+      width: 120px;
+      padding: 5px;
+    }
+    button {
+      padding: 5px 10px;
+      margin-left: 10px;
+    }
+    #message {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    #attempts {
+      margin-top: 10px;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Mountain Trivia Game</h1>
+  <div id="game">
+    <p id="question">Loading...</p>
+    <input id="guessInput" placeholder="Enter your answer">
+    <button onclick="submitGuess()">Submit</button>
+    <p id="message"></p>
+    <p id="attempts"></p>
+  </div>
+
+  <script>
+    const mountainData = [
+      { name: "Bald Mountain", height: 11950, trail: 2.7, elevationGain: 1200 },
+      { name: "Mt. Nebo", height: 11950, trail: 8.6, elevationGain: 3569 },
+      { name: "Mt. Timpanogos", height: 11750, trail: 14.7, elevationGain: 4901 },
+      { name: "Twin Peaks", height: 11500, trail: 15.3, elevationGain: 5098 },
+      { name: "Geek Peak", height: 11400, trail: 13.77, elevationGain: 4603 }
+    ];
+
+    let questions = [];
+    let current = 0;
+    let attempts = 0;
+
+    function createQuestions() {
+      let allQuestions = [];
+
+      mountainData.forEach(mountain => {
+        allQuestions.push({
+          type: 'height',
+          mountain: mountain.name,
+          correct: mountain.height,
+          prompt: `What is the height of ${mountain.name}? (in feet)`
+        });
+
+        allQuestions.push({
+          type: 'trail',
+          mountain: mountain.name,
+          correct: mountain.trail,
+          prompt: `What is the trail length for ${mountain.name}? (in miles)`
+        });
+
+        allQuestions.push({
+          type: 'elevationGain',
+          mountain: mountain.name,
+          correct: mountain.elevationGain,
+          prompt: `What is the elevation gain to summit ${mountain.name}? (in feet)`
+        });
+      });
+
+      return shuffleArray(allQuestions);
+    }
+
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    function startGame() {
+      questions = createQuestions();
+      current = 0;
+      attempts = 0;
+      document.getElementById("message").textContent = "";
+      document.getElementById("guessInput").value = "";
+      showQuestion();
+    }
+
+    function showQuestion() {
+      if (current < questions.length) {
+        attempts = 0;
+        const q = questions[current];
+        document.getElementById("question").textContent = q.prompt;
+        document.getElementById("guessInput").value = "";
+        updateAttempts();
+      } else {
+        document.getElementById("question").textContent = "You WIN!!!! 🎉";
+        document.getElementById("message").textContent = 
+          "Would you like to play again?";
+        document.getElementById("attempts").textContent = "";
+        if (confirm("You WIN!!!! 🎉 Play again?")) {
+          startGame();
+        }
+      }
+    }
+
+    function submitGuess() {
+      const input = document.getElementById("guessInput").value.trim();
+      const q = questions[current];
+      const userAnswer = q.type === 'trail' ? parseFloat(input) : parseInt(input);
+
+      if (isNaN(userAnswer)) {
+        document.getElementById("message").textContent = "Please enter a valid number.";
+        return;
+      }
+
+      attempts++;
+      updateAttempts();
+
+      const isCorrect = userAnswer === q.correct;
+
+      if (isCorrect) {
+        document.getElementById("message").textContent = "Good job!";
+        current++;
+        setTimeout(showQuestion, 1000);
+      } else {
+        document.getElementById("message").textContent = "Try again.";
+      }
+    }
+
+    function updateAttempts() {
+      document.getElementById("attempts").textContent = `Attempts: ${attempts}`;
+    }
+
+    // Start game on load
+    startGame();
+  </script>
+
+</body>
+</html>
