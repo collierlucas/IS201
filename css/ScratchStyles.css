@@ -1,0 +1,47 @@
+body{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 18px;
+    background-color: ivory;
+    text-align: left;
+    text-align: justify;
+}
+.bold{
+    font-weight: bold;
+    font-size: 20px;
+    color: rgb(26, 18, 143);
+}
+.itallics{
+    font-style: italic;
+    font-size: 18px;
+    color: darkolivegreen;
+}
+.underline{
+    text-decoration: underline;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+.allcaps{
+    text-transform: capitalize;
+}
+.header{
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    height: 120 px;
+    border-bottom: 10px black;
+}
+.body{
+    top: 130px;
+    left: 5px;
+    right: 5px;
+    bottom: 50px;
+}
+.footer{
+    border-top: 10px black;
+    bottom: 5px;
+    left: 5px;
+    right: 5px;
+    position: fixed;
+    text-align: center;
+    font-size: 12px;
+
+}
